@@ -1,0 +1,38 @@
+body {
+	font-size: 10pt;
+	font-family: "Lucida Grande",Calibri,Arial,sans-serif;
+	color:#000000;
+	background:#FFFFFF; 
+	width: 100%;
+}
+
+.main {
+        margin-left: 2px;
+        width: 100%;
+}
+
+.nav {
+	text-align: center;
+}
+
+.footer {
+	text-align: right;
+}
+
+a {
+	color:#FC7901;
+	background:inherit;
+	text-decoration:underline;
+}
+
+a:hover {
+	color:#FC7901;
+	background:#FFCC33;
+	text-decoration:underline;
+}
+
+
+hr {
+	height: 1px;
+	color: #c0c0c0;
+}
