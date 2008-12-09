@@ -1,9 +1,8 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
-	<ShortName>mookie's minisearch</ShortName>
-       	<Description>mookie's minisearch. all the goodness of yahoo! search, none of the fat.</Description>
-	<Image height="16" width="16" type="image/png">http://s.ultramookie.com/search.png</Image>
-	<InputEncoding>en</InputEncoding>
-	<Url type="text/html" method="GET" template="http://s.ultramookie.com/index.php?q={searchTerms}" />
-	<moz:SearchForm>searchFormURL</moz:SearchForm>
+  <ShortName>mookie's minisearch</ShortName>
+  <Description>mookie's minisearch. all the goodness of yahoo! search, none of the fat.</Description>
+  <Image height="16" width="16" type="image/png">http://s.ultramookie.com/search.png</Image>
+  <InputEncoding>en</InputEncoding>
+  <Url type="text/html" method="GET" template="http://s.ultramookie.com/index.php?q={searchTerms}" />
+  <moz:SearchForm>http://s.ultramookie.com/</moz:SearchForm>
 </OpenSearchDescription>
-
