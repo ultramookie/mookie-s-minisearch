@@ -1,0 +1,16 @@
+mookie's minisearch
+written by steve "mookie" kong
+
+installation
+------------
+
+move files to where you want them to be served.
+
+get an application id (free) from:  http://developer.yahoo.com/wsregapp/
+
+edit index.php and change the $appid to the appid granted you.
+
+edit minisearch.xml and change the "http://s.ultramookie.com" references
+to point to your domain and where you are hosting the search page.
+
+enjoy.
