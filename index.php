@@ -58,7 +58,7 @@ function printForm($term) {
 
 function printFoot() {
 	echo "<hr /><div class=\"footer\">";
-	echo "written by <a href=\"http://ultramookie.com\">ultramookie</a> | powered by <a href=\"http://developer.yahoo.com/search/boss/\">yahoo! search boss</a> | " . date("Y");
+	echo "written by <a href=\"http://ultramookie.com\">ultramookie</a> | get the <a href=\"http://github.com/ultramookie/mookie-s-minisearch/tree/master\">code</a> | powered by <a href=\"http://developer.yahoo.com/search/boss/\">yahoo! search boss</a> | " . date("Y");
 	echo "</div>";
 }
 

@@ -3,12 +3,10 @@ body {
 	font-family: "Lucida Grande",Calibri,Arial,sans-serif;
 	color:#000000;
 	background:#FFFFFF; 
-	width: 100%;
 }
 
 .main {
         margin-left: 2px;
-        width: 100%;
 }
 
 .nav {
