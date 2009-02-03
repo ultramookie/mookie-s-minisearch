@@ -89,6 +89,5 @@ function printFoot() {
 	}
 ?>
 </div>
-</script>
 </body>
 </html>
