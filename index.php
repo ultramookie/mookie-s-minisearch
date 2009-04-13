@@ -12,7 +12,7 @@
 
 function searchFor($term,$start,$count,$appid) {
 
-	$url = "http://boss.yahooapis.com/ysearch/web/v1/$term?appid=$appid&format=json&start=$start&count=$count";
+	$url = "http://boss.yahooapis.com/ysearch/web/v1/$term?appid=$appid&format=xml&start=$start&count=$count";
 
 	$session = curl_init();
 	curl_setopt ( $session, CURLOPT_URL, $url );
@@ -21,18 +21,12 @@ function searchFor($term,$start,$count,$appid) {
 	$result = curl_exec ( $session );
 	curl_close( $session );
 
-	$out = json_decode($result,true);
+        $xml = simplexml_load_string($result);
 
-	$num = $out['ysearchresponse']['count'];
-	$totalhits = $out['ysearchresponse']['totalhits'];
+	$totalhits = $xml->resultset_web['totalhits'];
 
-	for($i=0;$i<$num;$i++) {
-		$abstract = $out['ysearchresponse']['resultset_web'][$i]['abstract'];
-		$url = $out['ysearchresponse']['resultset_web'][$i]['url'];
-		$title = $out['ysearchresponse']['resultset_web'][$i]['title'];
-		$dispurl = $out['ysearchresponse']['resultset_web'][$i]['dispurl'];
-		
-		echo "<p><b><a href=\"$url\">$title</a></b> (<a href=\"$url\" target=\"_blank\">n</a>)<br />$abstract<br />$dispurl";
+	foreach ($xml->resultset_web->result as $result) {
+		echo "<p><b><a href=\"$result->url\">$result->title</a></b> (<a href=\"$result->url\" target=\"_blank\">n</a>)<br />$result->abstract<br />$result->dispurl";			
 	}
 
 	$prev = $start - $count;
