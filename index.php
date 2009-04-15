@@ -12,7 +12,7 @@
 
 function searchFor($term,$start,$count,$appid) {
 
-	$url = "http://boss.yahooapis.com/ysearch/web/v1/$term?appid=$appid&format=xml&start=$start&count=$count";
+	$url = "http://boss.yahooapis.com/ysearch/web/v1/$term?appid=$appid&format=xml&abstract=long&start=$start&count=$count";
 
 	$session = curl_init();
 	curl_setopt ( $session, CURLOPT_URL, $url );
@@ -25,17 +25,21 @@ function searchFor($term,$start,$count,$appid) {
 
 	$totalhits = $xml->resultset_web['totalhits'];
 
-	foreach ($xml->resultset_web->result as $result) {
-		echo "<p><b><a href=\"$result->url\">$result->title</a></b> (<a href=\"$result->url\" target=\"_blank\">n</a>)<br />$result->abstract<br />$result->dispurl";			
-	}
+	if ($totalhits == 0) {
+		echo "<p><b>no results for \"$term\"...</b></p>";
+	} else {
+		foreach ($xml->resultset_web->result as $result) {
+			echo "<p><b><a href=\"$result->url\">$result->title</a></b> (<a href=\"$result->url\" target=\"_blank\">n</a>)<br />$result->abstract<br />$result->dispurl";			
+		}
 
-	$prev = $start - $count;
-	$start = $start + $count;
+		$prev = $start - $count;
+		$start = $start + $count;
 
-	if(($count <= $totalhits) && ($prev >= 0)) {
-		echo "<div class=\"nav\"><a href=\"index.php?q=$term&s=$prev\"><< prev</a> (<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start\">next >></a></div>";
-	} else if ($count <= $totalhits) {
-		echo "<div class=\"nav\">(<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start\">next >></a></div>";
+		if(($count <= $totalhits) && ($prev >= 0)) {
+			echo "<div class=\"nav\"><a href=\"index.php?q=$term&s=$prev\"><< prev</a> (<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start\">next >></a></div>";
+		} else if ($count <= $totalhits) {
+			echo "<div class=\"nav\">(<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start\">next >></a></div>";
+		}
 	}
 
 	printFoot();
