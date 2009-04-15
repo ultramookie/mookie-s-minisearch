@@ -1,0 +1,10 @@
+<?php
+	// mookie's minisearch configuration file
+	// edit as needed, then move file to "config.php"
+
+        // yahoo! application id.  get your own at http://developer.yahoo.com/wsregapp/
+        $appid = "GET_YOUR_OWN_AT_URL_ABOVE";
+
+        // number of results per page
+        $count = 10;
+?>

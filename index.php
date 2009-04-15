@@ -1,9 +1,15 @@
 <?php
-	// yahoo! application id.  get your own at http://developer.yahoo.com/wsregapp/
-	$appid = "GET_YOUR_OWN_AT_URL_ABOVE";
 
-	// number of results per page
-	$count = 10;
+// mookie's minisearch
+// steve "mookie" kong
+// http://s.ultramookie.com
+//
+// licensed under gplv3
+// http://www.gnu.org/licenses/gpl-3.0.html
+//
+// built using yahoo! boss technology
+
+	include_once("config.php");
 
 	$term = rawurlencode(stripslashes($_GET['q']));
 	$start = stripslashes($_GET['s']);

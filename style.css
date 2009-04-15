@@ -1,8 +1,10 @@
 body {
 	font-size: 85%;
-	font-family: "Lucida Grande",Calibri,Arial,sans-serif;
+	font-family: Arial,"Lucida Grande",Calibri,sans-serif;
 	color:#000000;
 	background:#FFFFFF; 
+	max-width: 570px;
+	width: 95%;
 }
 
 .main {
