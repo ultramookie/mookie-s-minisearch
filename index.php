@@ -42,14 +42,39 @@ function searchFor($term,$start,$count,$appid) {
 		$start = $start + $count;
 
 		if(($count <= $totalhits) && ($prev >= 0)) {
-			echo "<div class=\"nav\"><a href=\"index.php?q=$term&s=$prev\"><< prev</a> (<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start\">next >></a></div>";
+			echo "<div id=\"nav\"><a href=\"index.php?q=$term&s=$prev\"><< prev</a> (<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start\">next >></a></div>";
 		} else if ($count <= $totalhits) {
-			echo "<div class=\"nav\">(<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start\">next >></a></div>";
+			echo "<div id=\"nav\">(<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start\">next >></a></div>";
 		}
 	}
+}
+function searchTwitterFor($term,$start,$count) {
 
-	printFoot();
+	// yahoo! boss index starts at 0. twitter? at 1.
+	// yahoo! boss takes last result as start,
+	// twitter takes page number.
+	if ($start == 0 ) {
+		$start++;
+	} else {
+		$start = ($start / 10) + 1;
+	}
 
+	$count = $count * 1.5; // twitter results are shorter.
+
+        $url = "http://search.twitter.com/search.atom?q=$term&page=$start&rpp=$count&show_user=true";
+
+        $session = curl_init();
+        curl_setopt ( $session, CURLOPT_URL, $url );
+        curl_setopt ( $session, CURLOPT_RETURNTRANSFER, TRUE );
+        curl_setopt ( $session, CURLOPT_CONNECTTIMEOUT, 2 );
+        $result = curl_exec ( $session );
+        curl_close( $session );
+
+        $xml = simplexml_load_string($result);
+
+        foreach ($xml->entry as $result) {
+                echo "<p>$result->content</p>";
+        }
 }
 
 function printForm($term) {
@@ -61,7 +86,7 @@ function printForm($term) {
 }
 
 function printFoot() {
-	echo "<hr /><div class=\"footer\">";
+	echo "<hr /><div id=\"footer\">";
 	echo "written by <a href=\"http://ultramookie.com\">ultramookie</a> | get the <a href=\"http://github.com/ultramookie/mookie-s-minisearch/tree/master\">code</a> | powered by <a href=\"http://developer.yahoo.com/search/boss/\">yahoo! search boss</a> | " . date("Y");
 	echo "</div>";
 }
@@ -81,17 +106,25 @@ function printFoot() {
 <link rel="search" type="application/opensearchdescription+xml" title="moookie's minisearch" href="minisearch.xml">
 </head>
 <body>
-<div class="main">
-
+<div id="wrap">
 <?php
 	printForm($term);
 
 	if ($term) {
+		print "<div id=\"main\">";
 		searchFor($term,$start,$count,$appid);
+		print "</div>";
+		print "<div id=\"sidebar\">";
+		print "<b>Results from <a href=\"http://www.twitter.com\">Twitter</a>...</b>";
+		searchTwitterFor($term,$start,$count);
+		print "</div>";
+		print "</div>";
+		printFoot();
 	} else {
-		print "all the goodness of <a href=\"http://ysearch.com\">yahoo! search</a>, none of the fat.";
+		print "all the goodness of <a href=\"http://ysearch.com\">yahoo! search</a> and <a href=\"http://www.twitter.com\">twitter</a>, none of the fat.";
+		print "</div>";
 	}
 ?>
-</div>
+
 </body>
 </html>
