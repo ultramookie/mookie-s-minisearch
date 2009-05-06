@@ -92,6 +92,11 @@ function searchTwitterFor($term,$start,$count,$type) {
 		}
                 echo "<p><a href=\"" . $result->author->uri . "\">" . $result->author->name . "</a>: $result->content<br />$printDiff ( <a href=\"" . $result->link['href']. "\">view tweet</a> )</p><hr />";
         }
+
+	if ($type == "twitter") {
+			$start = $start * 10 ;
+			echo "<div id=\"nav\">(<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start&type=$type \">next >></a></div>";
+	}
 }
 
 function printForm($term) {
