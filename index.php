@@ -13,10 +13,11 @@
 
 	$term = rawurlencode(stripslashes($_GET['q']));
 	$start = stripslashes($_GET['s']);
+	$type = stripslashes($_GET['type']);
 
 	if (!$start) $start = 0;
 
-function searchFor($term,$start,$count,$appid) {
+function searchFor($term,$start,$count,$appid,$type) {
 
 	$url = "http://boss.yahooapis.com/ysearch/web/v1/$term?appid=$appid&format=xml&abstract=long&start=$start&count=$count";
 
@@ -42,13 +43,13 @@ function searchFor($term,$start,$count,$appid) {
 		$start = $start + $count;
 
 		if(($count <= $totalhits) && ($prev >= 0)) {
-			echo "<div id=\"nav\"><a href=\"index.php?q=$term&s=$prev\"><< prev</a> (<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start\">next >></a></div>";
+			echo "<div id=\"nav\"><a href=\"index.php?q=$term&s=$prev&type=$type\"><< prev</a> (<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start&type=$type \">next >></a></div>";
 		} else if ($count <= $totalhits) {
-			echo "<div id=\"nav\">(<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start\">next >></a></div>";
+			echo "<div id=\"nav\">(<a href=\"index.php\">home</a>) <a href=\"index.php?q=$term&s=$start&type=$type \">next >></a></div>";
 		}
 	}
 }
-function searchTwitterFor($term,$start,$count) {
+function searchTwitterFor($term,$start,$count,$type) {
 
 	// yahoo! boss index starts at 0. twitter? at 1.
 	// yahoo! boss takes last result as start,
@@ -61,7 +62,7 @@ function searchTwitterFor($term,$start,$count) {
 
 	$count = $count * 1.5; // twitter results are shorter.
 
-        $url = "http://search.twitter.com/search.atom?q=$term&page=$start&rpp=$count&show_user=true";
+        $url = "http://search.twitter.com/search.atom?q=$term&page=$start&rpp=$count";
 
         $session = curl_init();
         curl_setopt ( $session, CURLOPT_URL, $url );
@@ -73,21 +74,24 @@ function searchTwitterFor($term,$start,$count) {
         $xml = simplexml_load_string($result);
 
         foreach ($xml->entry as $result) {
-                echo "<p>$result->content</p>";
+                echo "<p><a href=\"" . $result->author->uri . "\">" . $result->author->name . "</a>: $result->content ( <a href=\"" . $result->link['href']. "\">tweet</a> )</p><hr />";
         }
 }
 
 function printForm($term) {
 	echo "<form method=\"get\" action=\"index.php\">";
 	echo "<input type=\"text\" name=\"q\" value=\"" . rawurldecode($term). "\" />";
+	echo "<input type=\"submit\" value=\"find\" /><br />";
+	echo "<input type=\"radio\" name=\"type\" value=\"yahoo\" checked/>yahoo";
+	echo "<input type=\"radio\" name=\"type\" value=\"twitter\" />twitter";
+	echo "<input type=\"radio\" name=\"type\" value=\"both\" />both";
 	echo "<input type=\"hidden\" name=\"s\" value=\"0\" />";
-	echo "<input type=\"submit\" value=\"find\" />";
 	echo "</form>";
 }
 
 function printFoot() {
 	echo "<hr /><div id=\"footer\">";
-	echo "written by <a href=\"http://ultramookie.com\">ultramookie</a> | get the <a href=\"http://github.com/ultramookie/mookie-s-minisearch/tree/master\">code</a> | powered by <a href=\"http://developer.yahoo.com/search/boss/\">yahoo! search boss</a> | " . date("Y");
+	echo "written by <a href=\"http://ultramookie.com\">ultramookie</a> | get the <a href=\"http://github.com/ultramookie/mookie-s-minisearch/tree/master\">code</a> | powered by <a href=\"http://developer.yahoo.com/search/boss/\">yahoo! search boss</a> and <a href=\"http://search.twitter.com\">twitter search</a> | " . date("Y");
 	echo "</div>";
 }
 
@@ -110,13 +114,26 @@ function printFoot() {
 <?php
 	printForm($term);
 
-	if ($term) {
+	if ( ($term) && ($type == 'both') ) {
 		print "<div id=\"main\">";
-		searchFor($term,$start,$count,$appid);
+		searchFor($term,$start,$count,$appid,$type);
 		print "</div>";
 		print "<div id=\"sidebar\">";
 		print "<b>Results from <a href=\"http://www.twitter.com\">Twitter</a>...</b>";
-		searchTwitterFor($term,$start,$count);
+		searchTwitterFor($term,$start,$count,$type);
+		print "</div>";
+		print "</div>";
+		printFoot();
+	} else if ( ($term) && ($type == 'twitter') ) {
+		$count = $count * $twitMulti;
+		print "<div id=\"single\">";
+		searchTwitterFor($term,$start,$count,$type);
+		print "</div>";
+		print "</div>";
+		printFoot();
+	} else if ($term) {
+		print "<div id=\"single\">";
+		searchFor($term,$start,$count,$appid,$type);
 		print "</div>";
 		print "</div>";
 		printFoot();

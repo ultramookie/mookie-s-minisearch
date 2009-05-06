@@ -7,4 +7,7 @@
 
         // number of results per page
         $count = 10;
+
+        // for searching only twitter, we can get more results since they are small
+        $twitMulti = 5;
 ?>

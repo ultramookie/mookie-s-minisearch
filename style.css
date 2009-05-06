@@ -14,17 +14,35 @@ html {
 	width:750px;
 }
 
+#single {
+	width: 85%;
+        max-width: 640px;
+	color: #333333;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+#single a {
+	color:#FF6633;
+	text-decoration: none;
+	font-weight: bold;
+}
+
 #main {
 	width:500px;
 	float:left;
 	color: #333333;
+	padding-left: 3px;
+	padding-right: 3px;
 }
 
 #sidebar {
-	width:250px;
+	width:238px;
 	float:right;
 	color:#555555;
 	background: #FFCC99;
+	padding-left: 3px;
+	padding-right: 3px;
 }
 
 #sidebar p {
@@ -43,6 +61,7 @@ html {
 }
 
 #footer {
+	width:750px;
         text-align: right;
 	clear: both;
 }

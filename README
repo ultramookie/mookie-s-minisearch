@@ -1,6 +1,7 @@
 mookie's minisearch.
 written by steve "mookie" kong
 
-a small search page written in php and using the yahoo! boss api.
+a small search page written in php and using the yahoo! boss api and
+also the twitter search api.
 
 i use it to power my mobile search page at http://s.ultramookie.com.
