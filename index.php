@@ -51,6 +51,8 @@ function searchFor($term,$start,$count,$appid,$type) {
 }
 function searchTwitterFor($term,$start,$count,$type) {
 
+	date_default_timezone_set('UTC');
+
 	// yahoo! boss index starts at 0. twitter? at 1.
 	// yahoo! boss takes last result as start,
 	// twitter takes page number.
@@ -59,8 +61,6 @@ function searchTwitterFor($term,$start,$count,$type) {
 	} else {
 		$start = ($start / 10) + 1;
 	}
-
-	$count = $count * 1.5; // twitter results are shorter.
 
         $url = "http://search.twitter.com/search.atom?q=$term&page=$start&rpp=$count";
 
@@ -74,7 +74,23 @@ function searchTwitterFor($term,$start,$count,$type) {
         $xml = simplexml_load_string($result);
 
         foreach ($xml->entry as $result) {
-                echo "<p><a href=\"" . $result->author->uri . "\">" . $result->author->name . "</a>: $result->content ( <a href=\"" . $result->link['href']. "\">tweet</a> )</p><hr />";
+		$updated = $result->updated;
+		list($date,$timeWithZ) = split("T",$updated);
+		list($year,$month,$day) = split("-",$date);
+		list($time,$crap) = split("Z",$timeWithZ);
+		list($hour,$minute,$seconds) = split(":",$time);
+		$updateUT = mktime($hour,$minute,$seconds,$month,$day,$year);
+		list($nhour,$nminute,$nseconds,$nmonth,$nday,$nyear) = split("-",date("H-i-s-n-j-Y"));
+		$nowUT = mktime($nhour,$nminute,$nseconds,$nmonth,$nday,$nyear);
+		$diffTime = $nowUT - $updateUT;
+		if ($diffTime < 3600) {
+			$printDiff = round($diffTime / 60) . " minutes ago";
+		} else if ( ($diffTime <= 86400) && ($diffTime > 3600) ) {
+			$printDiff = "about " . round($diffTime / 3600) . " hours ago";
+		} else {
+			$printDiff = "about " . round($diffTime / 86400) . " days ago";
+		}
+                echo "<p><a href=\"" . $result->author->uri . "\">" . $result->author->name . "</a>: $result->content<br />$printDiff ( <a href=\"" . $result->link['href']. "\">view tweet</a> )</p><hr />";
         }
 }
 
