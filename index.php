@@ -159,7 +159,7 @@ function printFoot() {
 		print "</div>";
 		printFoot();
 	} else {
-		print "all the goodness of <a href=\"http://ysearch.com\">yahoo! search</a> and <a href=\"http://www.twitter.com\">twitter</a>, none of the fat.";
+		print "all the goodness of <a href=\"http://ysearch.com\">yahoo! search</a> and <a href=\"http://www.twitter.com\">twitter</a>, none of the <a href=\"index.php?q=fat&type=both&s=0\">fat</a>.";
 		print "</div>";
 	}
 ?>
